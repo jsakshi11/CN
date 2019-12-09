@@ -1,0 +1,77 @@
+import java.util.*;
+public class subnet 
+{
+   
+	public static void main(String[] args)
+	{
+	   Scanner sc=new Scanner(System.in);
+	   System.out.print("Enter IP address:");
+	   String ip=sc.nextLine();
+	   String split_ip[]=ip.split("\\.");
+	   String []split_bip=new String[4];
+	   String bip="";
+	   for (int i = 0; i < 4; i++) 
+	   {
+		    split_bip[i]=appendZero(Integer.toBinaryString
+					(Integer.parseInt(split_ip[i])));
+		    bip+=split_bip[i]+".";
+	    }
+	   System.out.println("\n IP in binary is "+bip);
+	   System.out.print("\n Enter the number of sub-networks: ");
+		int n = sc.nextInt();
+		n=(int)Math.ceil(Math.log(n)/Math.log(2));
+		System.out.println("\n Number of bits required for sub-network addressing = "+n);
+		String checkclass=ip.substring(0,3);
+		int cc=Integer.parseInt(checkclass);
+		if(cc>0 && cc<224)
+        {
+            if(cc<128)
+            {
+               
+               cal(n+8);
+            }
+            else if(cc>127 && cc<192)
+            {
+            	cal(n+16);
+            }
+            else if(cc>191)
+            {
+            	cal(n+24);
+            }
+        }
+		
+	}
+ 
+	static String appendZero(String s)
+	{
+		String temp="00000000";
+		return temp.substring(s.length())+s;
+	}
+	public static void cal(int n)
+	{
+		int cnt=0,j=0;
+		
+		String s[]=new String[4];
+		for (int i = 0; i < 4; i++) {
+			s[i]="";
+		}
+		System.out.print("\nSubnet mask is:");
+		for (int i = 0; i <32; i++) 
+		{
+		    if(cnt<8)
+		    {
+		    	if(i<n)
+		    	s[j]+="1";
+		    	else
+		    	s[j]+="0";
+		    	cnt++;
+		    }
+		    if(cnt==8)
+		    {
+		    	System.out.print(Integer.parseInt(s[j],2)+".");
+		    	cnt=0;j++;
+		    }
+	
+		}
+	}
+}
